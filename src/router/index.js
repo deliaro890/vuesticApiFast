@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue';
 import SignUpView from '../views/SignUpView.vue'
 import UserUpdateFormView from '../views/UserUpdateFormView'
+import LoginGoogleView from '../views/LoginGoogleView'
+
 
 const routes = [
   {
@@ -32,6 +34,11 @@ const routes = [
     path: '/updateform',
     name: 'UpdateFrom',
     component: UserUpdateFormView
+  },
+  {
+    path: '/logingoogle',
+    name: 'LoginGoogle',
+    component: LoginGoogleView
   }
 ]
 

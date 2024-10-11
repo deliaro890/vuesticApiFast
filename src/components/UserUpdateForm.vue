@@ -31,7 +31,7 @@ export default {
   methods: {
     async submitUpdate() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/return_user', {
+        const response = await axios.post('http://107.152.42.60:8000/return_user', {
           email: this.email
         }, {
           headers: { 'Content-Type': 'application/json' },

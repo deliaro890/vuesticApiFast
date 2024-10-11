@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     async submitLogin() {
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/login_user', {
+      try { 
+          const response = await axios.post('http://localhost:8000/login_user', { 
           email: this.email,
           password: this.password
         }, {
@@ -57,6 +57,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .login-container {

@@ -95,7 +95,7 @@ export default {
   methods: {
     async submitRegister() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/crea_nuevo_usuario', {
+        const response = await axios.post('http://107.152.42.60:8000/crea_nuevo_usuario', {
           email: this.email,
           name: this.name,
           last_name: this.lastName,
