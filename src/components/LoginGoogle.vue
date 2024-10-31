@@ -1,45 +1,85 @@
 <template>
-  <div id="google-login-button"></div>
+  <div>
+    <button @click="login">Login Using Google</button>
+ <div v-if="userDetails">
+      <h2>User Details</h2>
+      <p>Name: {{ userDetails.name }}</p>
+      <p>Email: {{ userDetails.email }}</p>
+      <p>Profile Picture: <img
+          :src="userDetails.picture"
+          alt="Profile Picture"
+        ></p>
+    </div>
+  </div>
 </template>
 
 <script>
+import { googleSdkLoaded } from "vue3-google-login";
+import axios from "axios";
+
 export default {
-  mounted() {
-    // Función de inicialización de Google
-    const initializeGoogleLogin = () => {
-      if (window.google && window.google.accounts) {
-        google.accounts.id.initialize({
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          callback: this.handleCredentialResponse,
-        });
-
-        google.accounts.id.renderButton(
-          document.getElementById('google-login-button'),
-          { theme: 'outline', size: 'large' }
-        );
-      }
+ data() {
+    return {
+      userDetails: null
     };
-
-    // Verificar si el script de Google ya está cargado
-    if (!window.google) {
-      // Cargar el script de Google si aún no está disponible
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = initializeGoogleLogin;
-      document.head.appendChild(script);
-    } else {
-      // Si ya está cargado, inicializar directamente
-      initializeGoogleLogin();
-    }
   },
+  name: "YourComponent",
   methods: {
-    handleCredentialResponse(response) {
-      const token = response.credential;
-      console.log('TOKEN!: ', token);
-      // Aquí puedes enviar el token a tu backend
+    login() {
+      googleSdkLoaded(google => {
+        google.accounts.oauth2
+          .initCodeClient({
+            client_id:
+              process.env.VUE_APP_CLIENT_ID,
+            scope: "email profile openid",
+            redirect_uri: "http://localhost:8080",
+            callback: response => {
+              if (response.code) {
+                this.sendCodeToBackend(response.code);
+              }
+            }
+          })
+          .requestCode();
+      });
     },
-  },
+    async sendCodeToBackend(code) {
+      try {
+        const response = await axios.post(
+          "https://oauth2.googleapis.com/token",
+          {
+            code,
+            client_id:
+            process.env.VUE_APP_CLIENT_ID,
+            client_secret: process.env.VUE_APP_CLIENT_SECRET,
+            redirect_uri: "postmessage",
+            grant_type: "authorization_code"
+          }
+        );
+
+        const accessToken = response.data.access_token;
+        console.log(accessToken);
+
+        // Fetch user details using the access token
+        const userResponse = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        );
+
+        if (userResponse && userResponse.data) {
+          // Set the userDetails data property to the userResponse object
+          this.userDetails = userResponse.data;
+        } else {
+          // Handle the case where userResponse or userResponse.data is undefined
+          console.error("Failed to fetch user details.");
+        }
+      } catch (error) {
+        console.error("Token exchange failed:", error.response.data);
+      }
+    }
+  }
 };
 </script>
