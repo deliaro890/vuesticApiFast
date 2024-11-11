@@ -1,12 +1,12 @@
 <template>
-  <nav>
+<!--   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/login">Login</router-link> |
     <router-link to="/signup">Sign Up</router-link> |
     <router-link to="/updateform">User Update</router-link> |
     <router-link to="/logingoogle">Login Google</router-link>
-  </nav>
+  </nav> -->
   <router-view/>
 </template>
 
