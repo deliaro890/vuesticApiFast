@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue';
 import SignUpView from '../views/SignUpView.vue'
 import UserUpdateFormView from '../views/UserUpdateFormView'
@@ -10,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: LoginGoogleView
   },
   {
     path: '/about',
