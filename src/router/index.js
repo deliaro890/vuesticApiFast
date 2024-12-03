@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginGoogleView from '@/views/LoginGoogleView'
 import DashboardView from '@/views/DashboardView'
-import store from '../store';
+import store from '@/store';
 
 const routes = [
   {

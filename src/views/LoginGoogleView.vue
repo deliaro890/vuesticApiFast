@@ -1,7 +1,5 @@
 <template>
   <div class="loginGoogle-view">
-    <LayoutMain>
-    </LayoutMain>
     <LoginGoogle />
   </div>
 </template>
