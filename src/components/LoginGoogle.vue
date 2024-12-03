@@ -6,44 +6,39 @@
         <h1 class="login-title">Infinity System</h1>
       </div>
       <va-card-content>
-        <GoogleLogin v-if="!userDetails"
+        <GoogleLogin
         :client-id="clientId"
         :callback="getUserData" 
         auto-login/>
-      <div v-if="userDetails">
-        <h2>User Details</h2>
-        <p>Name: {{ userDetails.name }}</p>
-        <p>Email: {{ userDetails.email }}</p>
-        <p>Profile Picture: <img
-          :src="userDetails.picture"
-          alt="Profile Picture"></p>
-        </div>
       </va-card-content>
     </va-card>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { GoogleLogin, decodeCredential } from "vue3-google-login";
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { ref, onMounted } from 'vue';
 
 export default {
-  components: {
-    GoogleLogin
-  },
- data() {
-    return {
-      userDetails: null,
-      clientId:process.env.VUE_APP_CLIENT_ID,
-      clientSecret:process.env.VUE_APP_CLIENT_SECRET
-    };
-  },
-  name: "YourComponent",
-  methods: {
-    getUserData(response){
-      console.log(response)
+
+  setup(){
+    const router = useRouter();
+    const store = useStore();
+    const getUserData =  (response) => {
       const userData = decodeCredential(response.credential)
-      this.userDetails=userData
-    }
+        store.commit('setUser', userData);
+        router.push('/dashboard');
+    };
+    onMounted(()=>{
+    const clientId = ref(process.env.VUE_APP_CLIENT_ID);
+    console.log(clientId)
+    const clientSecret = ref(process.env.VUE_APP_CLIENT_SECRET);
+    return (clientId, clientSecret)
+  })
+    return( getUserData)
   }
 };
 </script>

@@ -5,4 +5,4 @@ import 'vuestic-ui/css'
 import router from './router'
 
 
-createApp(App).use(router).use(router).use(createVuestic()).mount('#app')
+createApp(App).use(router).use(createVuestic()).mount('#app')
