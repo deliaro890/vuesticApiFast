@@ -7,7 +7,6 @@
       </div>
       <va-card-content>
         <GoogleLogin
-        :client-id="clientId"
         :callback="getUserData" 
         auto-login/>
       </va-card-content>
@@ -15,32 +14,19 @@
   </div>
 </template>
 
-<script>
-// eslint-disable-next-line no-unused-vars
+<script setup>
 import { GoogleLogin, decodeCredential } from "vue3-google-login";
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref, onMounted } from 'vue';
 
-export default {
-
-  setup(){
-    const router = useRouter();
-    const store = useStore();
-    const getUserData =  (response) => {
+const router = useRouter();
+const store = useStore();
+const getUserData =  (response) => {
       const userData = decodeCredential(response.credential)
-        store.commit('setUser', userData);
-        router.push('/dashboard');
-    };
-    onMounted(()=>{
-    const clientId = ref(process.env.VUE_APP_CLIENT_ID);
-    console.log(clientId)
-    const clientSecret = ref(process.env.VUE_APP_CLIENT_SECRET);
-    return (clientId, clientSecret)
-  })
-    return( getUserData)
-  }
-};
+      store.commit('setUser', userData);
+      router.push('/dashboard');
+      };
+
 </script>
 <style scoped>
 .login-container {
