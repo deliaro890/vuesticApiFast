@@ -1,14 +1,6 @@
 <template>
-    <UserDetails/>
-
+    <MainPage/>
 </template>
-<script>
-import UserDetails from '@/components/UserDetails';
-
-export default {
-  name: 'DashboardView',
-  components: {
-    UserDetails
-  }
-}
+<script setup>
+import MainPage from '@/components/MainPage.vue';
 </script>
