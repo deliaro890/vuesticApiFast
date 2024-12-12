@@ -7,7 +7,7 @@
       </div>
       <va-card-content>
         <GoogleLogin
-        :callback="getUserData" 
+        :callback="login" 
         auto-login/>
       </va-card-content>
     </va-card>
@@ -15,18 +15,16 @@
 </template>
 
 <script setup>
-import { GoogleLogin, decodeCredential } from "vue3-google-login";
+import { GoogleLogin } from "vue3-google-login";
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const router = useRouter();
 const store = useStore();
-const getUserData =  (response) => {
-      const userData = decodeCredential(response.credential)
-      store.commit('setUser', userData);
+const login = async (response) => {
+      await store.dispatch('login', response);
       router.push('/dashboard');
       };
-
 </script>
 <style scoped>
 .login-container {
